@@ -20,6 +20,7 @@ patient = api.model('Patient', {})
 
 testImagesDir = ""
 resultImagesDir = ""
+cloudinaryUploadFolder=""
 
 
 def InitiateDirectories(patient_id):
@@ -36,10 +37,11 @@ def download(result):
     for i in range(len(result)):
         urllib.request.urlretrieve(result[i], os.getcwd() + testImagesDir + f'\\image-{i}.jpg')
     print('Image download completed.')
-    threading.Thread(target=TeethDetection, args=(testImagesDir, resultImagesDir)).start()
+    threading.Thread(target=TeethDetection, args=(testImagesDir, resultImagesDir, cloudinaryUploadFolder)).start()
 
 
 def get_patient(patient_id):
+    global cloudinaryUploadFolder
     if patient_id > 0 and patient_id is not None:
         api_url = 'https://dmswebapi.azurewebsites.net/api/Get/PatientWantTest?patientTestID=' + str(patient_id)
         response = requests.get(api_url)
@@ -48,6 +50,7 @@ def get_patient(patient_id):
             if patient_data["Datalist"] is not None:
                 result = patient_data["Datalist"]["Images"]
                 if result is not None:
+                    cloudinaryUploadFolder = patient_data["Datalist"]["PT_Images"]
                     InitiateDirectories(patient_id)
                     threading.Thread(target=download, args=(result,)).start()
                     return jsonify(

@@ -2,17 +2,23 @@ import os
 import random
 import string
 import pathlib
+import cloudinary
 import numpy as np
 from PIL import Image
 import tensorflow as tf
 from IPython.display import display
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
 from tensorflow.python.framework.ops import disable_eager_execution
 from my_custom_detector.models.research.object_detection.utils import label_map_util
 from my_custom_detector.models.research.object_detection.utils import ops as utils_ops
 from my_custom_detector.models.research.object_detection.utils import visualization_utils as vis_util
 
+isDetectionCompleted = False
 
-def TeethDetection(testImagesDir, resultImagesDir):
+
+def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder):
+    global isDetectionCompleted
     disable_eager_execution()
     # patch tf1 into `utils.ops`
     utils_ops.tf = tf.compat.v1
@@ -31,7 +37,6 @@ def TeethDetection(testImagesDir, resultImagesDir):
     PATH_TO_LABELS = 'my_custom_detector/training/object-detection.pbtxt'
     category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
 
-    print(testImagesDir)
     # If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
     PATH_TO_TEST_IMAGES_DIR = pathlib.Path(os.getcwd() + testImagesDir)
     TEST_IMAGE_PATHS = sorted(list(PATH_TO_TEST_IMAGES_DIR.glob("*.jpg")))
@@ -92,8 +97,9 @@ def TeethDetection(testImagesDir, resultImagesDir):
             line_thickness=4)
         outputImage = Image.fromarray(image_np)
         randomImageName = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-        print(resultImagesDir)
         outputImage.save(os.getcwd() + resultImagesDir + "\\" + randomImageName + '.jpg')
+        global isDetectionCompleted
+        isDetectionCompleted = True
         '''
         display image in python using code below
         image_out = Image.new(mode="RGB", size=outputImage.size)
@@ -105,6 +111,32 @@ def TeethDetection(testImagesDir, resultImagesDir):
         display(outputImage)
         '''
 
+    def get_jpg_files(directory):
+        jpg_files = []
+        for file in os.listdir(directory):
+            if file.endswith(".jpg") or file.endswith(".JPG"):
+                jpg_files.append(os.path.join(directory, file))
+        return jpg_files
+
     for image_path in TEST_IMAGE_PATHS:
+        print(image_path)
         show_inference(detection_model, image_path)
-    print('Image detection completed.....')
+
+    if isDetectionCompleted:
+        # Config Cloudinary
+        cloudinary.config(
+            cloud_name="dg5esqkeb",
+            api_key="654286619656251",
+            api_secret="7-JkBR5t_EU8lN3ArIdvsZ1txCw",
+            secure=True
+        )
+        # Upload Detected Images in Cloudinary
+        directory_path = os.getcwd() + resultImagesDir
+        jpg_files = get_jpg_files(directory_path)
+        folderName = str(cloudinaryUploadFolder).replace("PatientUploaded", "PatientResults")
+        for image in jpg_files:
+            randomImageName = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+            upload(file=image, public_id=randomImageName, tags="PatientImages", folder=folderName)
+        print('Image detection completed.....')
+    else:
+        print('No Image detection performed.....')
