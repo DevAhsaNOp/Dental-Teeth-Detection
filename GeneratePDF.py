@@ -1,8 +1,10 @@
+import os
 import jinja2
 import pdfkit
 import random
 import string
 from datetime import datetime
+from EmailTestReport import EmailTeethTestReport
 
 global patientGetDetails
 
@@ -23,7 +25,7 @@ def GeneratePDF(patientDetails, uploadedTestedImages):
     DentistPhoneNumber = "03312398777"
     Date = datetime.today().strftime("%d %b, %Y")
     Time = datetime.today().strftime("%I:%M:%S %p")
-    patientImage = "https://dmswebapp.azurewebsites.net" + str(patientGetDetails["tblPatient"]["P_ProfileImage"]).\
+    patientImage = "https://dmswebapp.azurewebsites.net" + str(patientGetDetails["tblPatient"]["P_ProfileImage"]). \
         replace("~", "")
     DentistService = "Smelly Breath and Toothache"
     image_paths = uploadedTestedImages
@@ -32,7 +34,8 @@ def GeneratePDF(patientDetails, uploadedTestedImages):
         image_tags += f'<img class="image-item" src="{path}" />'
 
     context = {'PatientID': PatientID, 'Firstname': Firstname, 'Lastname': Lastname, 'PhoneNumber': PhoneNumber,
-               'EmailAddress': EmailAddress, 'Gender': Gender, 'Address': Address, 'Age': Age, 'DentistName': DentistName,
+               'EmailAddress': EmailAddress, 'Gender': Gender, 'Address': Address, 'Age': Age,
+               'DentistName': DentistName,
                'DentistPhoneNumber': DentistPhoneNumber, 'Date': Date, 'patientImage': patientImage,
                'DentistService': DentistService, 'Time': Time, 'image_tags': image_tags}
 
@@ -52,5 +55,8 @@ def GeneratePDF(patientDetails, uploadedTestedImages):
 
     config = pdfkit.configuration(wkhtmltopdf='.\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
     randomPDFName = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-    output_pdf = 'Patient' + str(patientGetDetails["PT_PatientID"]) + '_' + randomPDFName + '.pdf'
+    output_pdf = os.getcwd() + "\\Teeth Test Report PDF\\" + 'Patient' + str(patientGetDetails["PT_PatientID"]) + '_' + \
+                 randomPDFName + '.pdf'
     pdfkit.from_string(output_text, output_pdf, configuration=config, css='style.css', options=options)
+    print("PDF Generated Successfully!")
+    EmailTeethTestReport(patientGetDetails, output_pdf)

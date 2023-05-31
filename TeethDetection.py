@@ -20,6 +20,7 @@ uploadedTestedImages = []
 
 def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder, patientDetails):
     global isDetectionCompleted
+    print('Image Detection Started!')
     disable_eager_execution()
     # patch tf1 into `utils.ops`
     utils_ops.tf = tf.compat.v1
@@ -120,7 +121,6 @@ def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder, patie
         return jpg_files
 
     for image_path in TEST_IMAGE_PATHS:
-        print(image_path)
         show_inference(detection_model, image_path)
 
     if isDetectionCompleted:
@@ -139,7 +139,6 @@ def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder, patie
         for image in jpg_files:
             randomImageName = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
             result = upload(file=image, public_id=randomImageName, tags="PatientImages", folder=folderName)
-            print(result['secure_url'])
             uploadedTestedImages.append(result['secure_url'])
 
         GeneratePDF(patientDetails, uploadedTestedImages)
