@@ -6,18 +6,19 @@ import cloudinary
 import numpy as np
 from PIL import Image
 import tensorflow as tf
+from GeneratePDF import GeneratePDF
 from IPython.display import display
 from cloudinary.uploader import upload
-from cloudinary.utils import cloudinary_url
 from tensorflow.python.framework.ops import disable_eager_execution
 from my_custom_detector.models.research.object_detection.utils import label_map_util
 from my_custom_detector.models.research.object_detection.utils import ops as utils_ops
 from my_custom_detector.models.research.object_detection.utils import visualization_utils as vis_util
 
 isDetectionCompleted = False
+uploadedTestedImages = []
 
 
-def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder):
+def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder, patientDetails):
     global isDetectionCompleted
     disable_eager_execution()
     # patch tf1 into `utils.ops`
@@ -134,9 +135,14 @@ def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder):
         directory_path = os.getcwd() + resultImagesDir
         jpg_files = get_jpg_files(directory_path)
         folderName = str(cloudinaryUploadFolder).replace("PatientUploaded", "PatientResults")
+        global uploadedTestedImages
         for image in jpg_files:
             randomImageName = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-            upload(file=image, public_id=randomImageName, tags="PatientImages", folder=folderName)
+            result = upload(file=image, public_id=randomImageName, tags="PatientImages", folder=folderName)
+            print(result['secure_url'])
+            uploadedTestedImages.append(result['secure_url'])
+
+        GeneratePDF(patientDetails, uploadedTestedImages)
         print('Image detection completed.....')
     else:
         print('No Image detection performed.....')

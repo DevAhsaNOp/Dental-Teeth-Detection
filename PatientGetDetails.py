@@ -3,9 +3,9 @@ import time
 import urllib
 import requests
 import threading
-from TeethDetection import TeethDetection
 from flask import Flask, jsonify
 from flask_restx import Api, Resource
+from TeethDetection import TeethDetection
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
@@ -20,7 +20,8 @@ patient = api.model('Patient', {})
 
 testImagesDir = ""
 resultImagesDir = ""
-cloudinaryUploadFolder=""
+cloudinaryUploadFolder = ""
+patientDetails = {}
 
 
 def InitiateDirectories(patient_id):
@@ -37,11 +38,12 @@ def download(result):
     for i in range(len(result)):
         urllib.request.urlretrieve(result[i], os.getcwd() + testImagesDir + f'\\image-{i}.jpg')
     print('Image download completed.')
-    threading.Thread(target=TeethDetection, args=(testImagesDir, resultImagesDir, cloudinaryUploadFolder)).start()
+    threading.Thread(target=TeethDetection, args=(testImagesDir, resultImagesDir, cloudinaryUploadFolder,
+                                                  patientDetails)).start()
 
 
 def get_patient(patient_id):
-    global cloudinaryUploadFolder
+    global cloudinaryUploadFolder, patientDetails
     if patient_id > 0 and patient_id is not None:
         api_url = 'https://dmswebapi.azurewebsites.net/api/Get/PatientWantTest?patientTestID=' + str(patient_id)
         response = requests.get(api_url)
@@ -51,6 +53,7 @@ def get_patient(patient_id):
                 result = patient_data["Datalist"]["Images"]
                 if result is not None:
                     cloudinaryUploadFolder = patient_data["Datalist"]["PT_Images"]
+                    patientDetails = patient_data["Datalist"]
                     InitiateDirectories(patient_id)
                     threading.Thread(target=download, args=(result,)).start()
                     return jsonify(
