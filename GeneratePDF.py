@@ -3,15 +3,19 @@ import jinja2
 import pdfkit
 import random
 import string
+import cloudinary
 from datetime import datetime
+from cloudinary.uploader import upload
 from EmailTestReport import EmailTeethTestReport
 
 global patientGetDetails
 
 
-def GeneratePDF(patientDetails, uploadedTestedImages):
+def GeneratePDF(patientDetails, uploadedTestedImages, cloudinaryUploadFolder):
     global patientGetDetails
+    print(cloudinaryUploadFolder)
     patientGetDetails = patientDetails
+    PatientTestID = str(patientGetDetails["PT_ID"])
     PatientID = str(patientGetDetails["PT_PatientID"])
     Firstname = str(patientGetDetails["tblPatient"]["P_FirstName"])
     Lastname = str(patientGetDetails["tblPatient"]["P_LastName"])
@@ -33,9 +37,9 @@ def GeneratePDF(patientDetails, uploadedTestedImages):
     for path in image_paths:
         image_tags += f'<img class="image-item" src="{path}" />'
 
-    context = {'PatientID': PatientID, 'Firstname': Firstname, 'Lastname': Lastname, 'PhoneNumber': PhoneNumber,
-               'EmailAddress': EmailAddress, 'Gender': Gender, 'Address': Address, 'Age': Age,
-               'DentistName': DentistName,
+    context = {'PatientTestID': PatientTestID, 'PatientID': PatientID, 'Firstname': Firstname, 'Lastname': Lastname,
+               'PhoneNumber': PhoneNumber, 'EmailAddress': EmailAddress, 'Gender': Gender, 'Address': Address,
+               'Age': Age, 'DentistName': DentistName,
                'DentistPhoneNumber': DentistPhoneNumber, 'Date': Date, 'patientImage': patientImage,
                'DentistService': DentistService, 'Time': Time, 'image_tags': image_tags}
 
@@ -59,4 +63,17 @@ def GeneratePDF(patientDetails, uploadedTestedImages):
                  randomPDFName + '.pdf'
     pdfkit.from_string(output_text, output_pdf, configuration=config, css='style.css', options=options)
     print("PDF Generated Successfully!")
-    EmailTeethTestReport(patientGetDetails, output_pdf)
+    # Config Cloudinary
+    cloudinary.config(
+        cloud_name="dg5esqkeb",
+        api_key="654286619656251",
+        api_secret="7-JkBR5t_EU8lN3ArIdvsZ1txCw",
+        secure=True
+    )
+
+    # Upload Detected Images PDF File in Cloudinary
+    folderName = str(cloudinaryUploadFolder).replace("PatientUploaded", "PatientResults")
+    randomImageName = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6)) + 'Patient' \
+                      + PatientID
+    result = upload(file=output_pdf, use_filename=True, unique_filename=False, tags="PatientOutputPDF", folder=folderName)
+    EmailTeethTestReport(patientGetDetails, output_pdf, result['secure_url'])

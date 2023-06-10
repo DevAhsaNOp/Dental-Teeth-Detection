@@ -1,5 +1,6 @@
 import ssl
 import smtplib
+import requests
 from email import encoders
 from datetime import datetime
 from email.mime.base import MIMEBase
@@ -7,7 +8,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-def EmailTeethTestReport(patientDetails, PDFPath):
+def EmailTeethTestReport(patientDetails, PDFPath, PDFUrl):
     subject = "Dental Teeth Test Report"
     body = f'''<html><body>
     <p><b>Dear {str(patientDetails["tblPatient"]["P_FirstName"])},</b></p>
@@ -62,3 +63,19 @@ def EmailTeethTestReport(patientDetails, PDFPath):
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, text)
     print("Email send successfully!")
+    PatientTestID = str(patientDetails["PT_ID"])
+    PatientID = str(patientDetails["PT_PatientID"])
+    UpdatePdfFileURL(PatientTestID, PDFUrl, PatientID)
+
+
+def UpdatePdfFileURL(PatientTestID, PdfURL, PatientID):
+    url = "https://dmswebapi.azurewebsites.net/api/Update/PatientTest"
+
+    payload = 'PT_Pdf=' + PdfURL + '&PT_ID=' + PatientTestID + '&PT_PatientID=' + PatientID + '&PT_Images=Abc&ImagesCount=5'
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
+    print("Database Updated Successfully!")

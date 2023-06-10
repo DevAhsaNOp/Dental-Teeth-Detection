@@ -141,7 +141,7 @@ def TeethDetection(testImagesDir, resultImagesDir, cloudinaryUploadFolder, patie
             result = upload(file=image, public_id=randomImageName, tags="PatientImages", folder=folderName)
             uploadedTestedImages.append(result['secure_url'])
 
-        GeneratePDF(patientDetails, uploadedTestedImages)
+        GeneratePDF(patientDetails, uploadedTestedImages, cloudinaryUploadFolder)
         print('Image detection completed.....')
     else:
         print('No Image detection performed.....')
