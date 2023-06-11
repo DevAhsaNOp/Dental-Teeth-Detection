@@ -45,7 +45,6 @@ attrs==22.1.0
 backcall==0.2.0
 beautifulsoup4==4.11.1
 bleach==4.1.0
-ca-certificates==2023.01.10
 certifi==2023.5.7
 cffi==1.15.1
 colorama==0.4.6
