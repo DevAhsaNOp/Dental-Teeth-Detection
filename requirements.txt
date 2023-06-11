@@ -64,7 +64,7 @@ jedi==0.18.1
 jinja2==3.1.2
 jsonschema==4.17.3
 protobuf==3.20.1
-libsodium==1.0.18
+libsodium==1.0.2
 lxml==4.9.2
 markupsafe==2.1.1
 matplotlib-inline==0.1.6
