@@ -61,3 +61,5 @@ jobs:
           app-name: 'dentalteethdetection'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_75413FEF54AF443CA035BCBFDF8F2E12 }}
+      - name: Run Python script
+        run: python PatientGetDetails.py
