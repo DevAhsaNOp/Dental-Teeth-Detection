@@ -94,7 +94,6 @@ packaging==23.0
 pandocfilters==1.5.0
 parso==0.8.3
 pickleshare==0.7.5
-pip==23.0.1
 platformdirs==2.5.2
 powershell_shortcut==0.0.1
 powershell_shortcut_miniconda==0.0.1
