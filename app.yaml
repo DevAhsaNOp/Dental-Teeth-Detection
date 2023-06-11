@@ -1,12 +1,15 @@
-runtime: python27
+runtime: python310
 api_version: 1
 threadsafe: true
 
 handlers:
 - url: /.*
   script: PatientGetDetails.app
-  
+
 resources:
   cpu: 8
   memory_gb: 4
   disk_size_gb: 20
+
+skip_files:
+- ^my_custom_detector/models/research/syntaxnet/dragnn/python/testdata/ud-hungarian\.params$
