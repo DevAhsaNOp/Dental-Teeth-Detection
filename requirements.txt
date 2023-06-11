@@ -30,7 +30,6 @@ requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==13.3.3
 tensorflow==2.12.0
-tensorflow-intel==2.12.0
 tomli==2.0.1
 twine==4.0.2
 werkzeug==2.3.4
