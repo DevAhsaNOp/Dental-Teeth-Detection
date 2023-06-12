@@ -57,20 +57,20 @@ def get_patient(patient_id):
                     InitiateDirectories(patient_id)
                     threading.Thread(target=download, args=(result,)).start()
                     return jsonify(
-                        {'Status': 'Success', 'Status Code': '200',
+                        {'Status': 'Success', 'StatusCode': '200',
                          'Message': 'Record exists. Image download initiated.'})
                 else:
                     return jsonify(
-                        {'Status': 'No-Content', 'Status Code': '204', 'Message': 'Record exists. No images found.'})
+                        {'Status': 'No-Content', 'StatusCode': '204', 'Message': 'Record exists. No images found.'})
             else:
                 return jsonify(
-                    {'Status': 'Error Not Found', 'Status Code': '404', 'Message': 'Record does not exist.'})
+                    {'Status': 'Error Not Found', 'StatusCode': '404', 'Message': 'Record does not exist.'})
         else:
             return jsonify(
-                {'Status': 'Internal Server Error', 'Status Code': '500', 'Message': 'Error in retrieving data.'})
+                {'Status': 'Internal Server Error', 'StatusCode': '500', 'Message': 'Error in retrieving data.'})
     else:
         return jsonify(
-            {'Status': 'Internal Server Error', 'Status Code': '500', 'Message': 'Please provide patient id.'})
+            {'Status': 'Internal Server Error', 'Status Code': '504', 'Message': 'Please provide patient id.'})
 
 
 @ns.route('/patient/<int:patient_id>')
@@ -86,4 +86,4 @@ class Patient(Resource):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, ssl_context=("cert.pem", "key.pem"))
