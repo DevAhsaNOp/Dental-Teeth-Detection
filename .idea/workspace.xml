@@ -4,33 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6723e19e-fef9-45fb-842b-15684604bcdc" name="Changes" comment="EmailTestReport.py is added for sending Teeth Test Report to patients via Email and Save the Link of PDF to Database!">
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientResults/AFUfez.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientResults/ELbUxn.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientResults/QBaaDg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientResults/fv5jMk.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientResults/j69Jtg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientUploaded/image-0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientUploaded/image-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientUploaded/image-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientUploaded/image-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/2155Patient11/PatientUploaded/image-4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientResults/GszWlv.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientResults/JPEqNY.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientResults/KxEBwp.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientResults/Ymi66s.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientResults/l5nJkr.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientUploaded/image-0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientUploaded/image-1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientUploaded/image-2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientUploaded/image-3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PatientTeethDetection/4037Patient11/PatientUploaded/image-4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Teeth Test Report PDF/Patient11_1tIPGx.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Teeth Test Report PDF/Patient11_kg9ezP.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cert.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/key.pem" afterDir="false" />
+    <list default="true" id="6723e19e-fef9-45fb-842b-15684604bcdc" name="Changes" comment="Added!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PatientGetDetails.py" beforeDir="false" afterPath="$PROJECT_DIR$/PatientGetDetails.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/key.pem" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
